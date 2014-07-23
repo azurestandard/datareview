@@ -2,10 +2,12 @@
 
 /* Directives */
 
+var dataReviewDirectives = angular.module('dataReview.directives', []);
 
-angular.module('myApp.directives', []).
-  directive('appVersion', ['version', function(version) {
-    return function(scope, elm, attrs) {
-      elm.text(version);
-    };
-  }]);
+dataReviewDirectives.directive('appVersion', ['version',
+    function(version) {
+        return function(scope, elem, attrs) {
+            elem.text(version);
+        };
+    }
+]);

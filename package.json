@@ -1,10 +1,14 @@
 {
-  "name": "angular-seed",
-  "private": true,
-  "version": "0.0.0",
-  "description": "A starter project for AngularJS",
-  "repository": "https://github.com/angular/angular-seed",
+  "name": "datareview",
+  "version": "0.0.1",
+  "description": "A generic client-side data review app written in AngularJS",
+  "homepage": "https://github.com/azurestandard/datareview",
+  "bugs": "https://github.com/azurestandard/datareview/issues",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/azurestandard/datareview.git"
+  },
   "devDependencies": {
     "karma": "~0.10",
     "protractor": "~0.20.1",

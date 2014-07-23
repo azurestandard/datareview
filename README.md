@@ -1,34 +1,65 @@
-# angular-seed — the seed for AngularJS apps
+# datareview - Generic client-side UI for data parsing and/or review
 
-This project is an application skeleton for a typical [AngularJS](http://angularjs.org/) web app.
-You can use it to quickly bootstrap your angular webapp projects and dev environment for these
-projects.
+Caution: This project is pre-alpha - everything is subject to change.
 
-The seed contains a sample AngularJS application and is preconfigured to install the Angular
-framework and a bunch of development and testing tools for instant web development gratification.
+The purpose of this project is to provide a (hopefully) pragmatic generic client-side user interface for the purposes of parsing and reviewing data from a REST-ish backend.  The ```datareview_config``` variable defines one or more endpoints that will be listed on the _Overview_ page.  An example is as follows:
 
-The seed app doesn't do much, just shows how to wire two controllers and views together.
+```js
+var datareview_config = {
+    home_label: 'datareview Home',
+    home_url: 'https://github.com/azurestandard/datareview',
+    // overview_label: 'Overview Label',
+    // overview_nav_label: 'Overview Nav Label',
+    // bulk_label: 'Bulk Label',
+    // bulk_nav_label: 'Bulk Nav Label',
+    // individual_label: 'Individual Label',
+    // individual_nav_label: 'Individual Nav Label',
+    // default_text: 'Overview default text:',
+    endpoints: [
+        {
+            key: 'prod_description',
+            label_for_overview: 'Product Description Parsing and Review',
+            bulk_label: 'Bulk Review of Product Descriptions',
+            individual_label: 'Individual Review of a Product Description',
+            action: '/individual/prod_description/7314',
+            // action: '/bulk/',
+            // todo: replace individual endpoint w/ bulk endpoint stuff ...
+            js: {
+                // note these files can be anywhere that is *trustworthy*;
+                // they will be loaded dynamically using $script.js ...
+                parsing_rules: 'js/parsing_rules.js',
+                view: 'js/view.js'
+            },
+            url: 'http://example.com/prod_description/:id/datareview'
+        }
+    ]
+```
 
+  When a user selects one of these endpoints, the appropriate js for that endpoint will be loaded, if needed, and the UI will update to match that endpoint's configuration.  So, for example, if you are wanting to parse a product description from one field into multiple fields on the backend, along with an interface to allow a user to review and apply the changes that might be one endpoint.  Another endpoint might be for a completely unrelated purpose.  Within each endpoint, the _js_ property contains a specific object detailing where to find ```parsing_rules``` and ```view``` related code.  _For now, both are required._
+
+  The _Bulk Review_ area will likely contain a datagrid where a user can apply quick changes in bulk and/or select an individual item to review.  The _Individual Review_ area is for more fine-tuned changes and more detailed review.  The interface handling for _Individual Review_ is still being determined.  The idea is to keep as much in the view.js (or whatever the user calls it) for each endpoint.  How to do that in an _Angular_ way is an interesting topic that is being explored.
 
 ## Getting Started
 
-To get you started you can simply clone the angular-seed repository and install the dependencies:
+To get you started you can simply clone the datareview repository and install the dependencies (see prerequisites).
 
 ### Prerequisites
 
-You need git to clone the angular-seed repository. You can get it from
+Since this is based on angular-seed, the same prerequistes are required:
+
+You need git to clone the datareview repository. You can get it from
 [http://git-scm.com/](http://git-scm.com/).
 
 We also use a number of node.js tools to initialize and test angular-seed. You must have node.js and
 its package manager (npm) installed.  You can get them from [http://nodejs.org/](http://nodejs.org/).
 
-### Clone angular-seed
+### Clone datareview
 
-Clone the angular-seed repository using [git][git]:
+Clone the datareview repository using [git][git]:
 
 ```
-git clone https://github.com/angular/angular-seed.git
-cd angular-seed
+git clone https://github.com/azurestandard/datareview.git
+cd datareview
 ```
 
 ### Install Dependencies
@@ -99,6 +130,8 @@ Now browse to the app at `http://localhost:8000/app/index.html`.
 
 
 ## Testing
+
+_Not there for this project right now._
 
 There are two kinds of tests in the angular-seed application: Unit tests and End to End tests.
 
@@ -191,21 +224,6 @@ bower update
 This will find the latest versions that match the version ranges specified in the `bower.json` file.
 
 
-## Loading Angular Asynchronously
-
-The angular-seed project supports loading the framework and application scripts asynchronously.  The
-special `index-async.html` is designed to support this style of loading.  For it to work you must
-inject a piece of Angular JavaScript into the HTML page.  The project has a predefined script to help
-do this.
-
-```
-npm run update-index-async
-```
-
-This will copy the contents of the `angular-loader.js` library file into the `index-async.html` page.
-You can run this every time you update the version of Angular that you are using.
-
-
 ## Serving the Application Files
 
 While angular is client-side-only technology and it's possible to create angular webapps that
@@ -251,29 +269,6 @@ applicable. Usually this is done by hosting the files by the backend server or t
 reverse-proxying the backend server(s) and webserver(s).
 
 
-## Continuous Integration
-
-### Travis CI
-
-[Travis CI][travis] is a continuous integration service, which can monitor GitHub for new commits
-to your repository and execute scripts such as building the app or running tests. The angular-seed
-project contains a Travis configuration file, `.travis.yml`, which will cause Travis to run your
-tests when you push to GitHub.
-
-You will need to enable the integration between Travis and GitHub. See the Travis website for more
-instruction on how to do this.
-
-### CloudBees
-
-CloudBees have provided a CI/deployment setup:
-
-<a href="https://grandcentral.cloudbees.com/?CB_clickstart=https://raw.github.com/CloudBees-community/angular-js-clickstart/master/clickstart.json">
-<img src="https://d3ko533tu1ozfq.cloudfront.net/clickstart/deployInstantly.png"/></a>
-
-If you run this, you will get a cloned version of this repo to start working on in a private git repo,
-along with a CI service (in Jenkins) hosted that will run unit and end to end tests in both Firefox and Chrome.
-
-
 ## Contact
 
 For more information on AngularJS please check out http://angularjs.org/
@@ -287,3 +282,8 @@ For more information on AngularJS please check out http://angularjs.org/
 [karma]: http://karma-runner.github.io
 [travis]: https://travis-ci.org/
 [http-server]: https://github.com/nodeapps/http-server
+
+
+## License
+
+MIT

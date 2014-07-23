@@ -1,0 +1,11 @@
+<div class="container" id="main">
+    <div class="row">
+        <div class="col-md-6">
+            <h1>{{ overview_label }}</h1>
+            <p ng-bind-html="default_text"></p>
+                <div ng-repeat="(i, endpoint) in endpoints track by $index">
+                    <input type="radio" name="reviews" ng-value="i" ng-model="endpoint_index" ng-change="endpoint_selected(i)" /> {{ endpoint.label_for_overview }}</input>
+                </div>
+        </div>
+    </div>
+</div>

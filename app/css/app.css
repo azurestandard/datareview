@@ -28,3 +28,36 @@
   content: "";
   padding: 0;
 }
+
+/*
+  General "site wide" styles
+  ***************************/
+body {
+  padding-top: 50px;
+}
+
+input[type=number] {
+  text-align: right;
+}
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.navbar-nav > li > a {
+    padding-top: 5px;
+    padding-bottom:5px;
+}
+.navbar {
+    min-height:32px;
+}
+
+.inactive {
+    background-color: rgba(255,0,0,0.3);
+}
+
+/*
+  For UI Bootstrap
+  ***************************/
+.nav, .pagination, .panel-title a { cursor: pointer; }

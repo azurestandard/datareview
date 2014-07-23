@@ -2,8 +2,39 @@
 
 /* Services */
 
+var dataReviewServices = angular.module('dataReview.services', []);
 
-// Demonstrate how to register services
-// In this case it is a simple value service.
-angular.module('myApp.services', []).
-  value('version', '0.1');
+dataReviewServices.value('version', '0.1');
+
+var config = angular.module('config', []);
+
+config.
+    factory('config', function() {
+        return datareview_config; // defined in dev-supplied config.js; alternatively, define config here
+    });
+
+var jsFetcher = angular.module('jsFetcher', []);
+
+jsFetcher.
+    factory('jsFetcher', ['$rootScope', '$route', 'config',
+        function($rootScope, $route, config) {
+            return {
+                fetch: function (endpoint, refresh_fn, callback_fn) {
+                    if (!endpoint.fetched &&
+                         refresh_fn &&
+                         endpoint.js) {
+                        var js_urls = [
+                            endpoint.js.parsing_rules,
+                            endpoint.js.view
+                        ]
+
+                        $script(js_urls, function() {
+                            endpoint.fetched = true;
+                            refresh_fn(callback_fn);
+                        });
+                    }
+                }
+            }
+        }
+    ]);
+

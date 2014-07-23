@@ -1,15 +1,22 @@
 {
-  "name": "angular-seed",
-  "description": "A starter project for AngularJS",
-  "version": "0.0.0",
-  "homepage": "https://github.com/angular/angular-seed",
+  "name": "datareview",
+  "description": "A generic client-side data review app written in AngularJS",
+  "version": "0.0.1",
+  "homepage": "https://github.com/azurestandard/datareview",
   "license": "MIT",
-  "private": true,
   "dependencies": {
     "angular": "1.2.x",
+    "angular-bootstrap": "~0.11.0",
+    "angular-resource": "1.2.x",
     "angular-route": "1.2.x",
+    "angular-sanitize": "1.2.x",
     "angular-loader": "1.2.x",
     "angular-mocks": "~1.2.x",
-    "html5-boilerplate": "~4.3.0"
+    "html5-boilerplate": "~4.3.0",
+    "underscore": "~1.6.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/azurestandard/datareview.git"
   }
 }
