@@ -16,8 +16,8 @@ config.
 var jsFetcher = angular.module('jsFetcher', []);
 
 jsFetcher.
-    factory('jsFetcher', ['$rootScope', '$route', 'config',
-        function($rootScope, $route, config) {
+    factory('jsFetcher', ['config',
+        function(config) {
             return {
                 fetch: function (endpoint, refresh_fn, callback_fn) {
                     if (!endpoint.fetched &&
