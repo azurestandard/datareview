@@ -1,27 +1,5 @@
 <div class="container" id="main">
     <h1>{{ individual_label }}</h1>
     <br/>
-    <div class="row" ng-if="endpoint">
-        <div class="col-md-6">
-            <p>
-                <b>Original Description:</b>
-                <div ng-bind-html="left_side"></div>
-            </p>
-        </div>
-        <div class="col-md-6">
-            <div ng-bind-html="right_side"></div>
-        </div>
-    </div>
-    <div class="row" ng-if="endpoint">
-        <div class="col-md-6">
-            <p>
-                <b>Parsed Info:</b>
-                <div ng-bind-html="parsed_text"></div>
-            </p>
-            <p>
-                <b>Parsing Rules:</b>
-                <div>{{ parsing_rules }}</div>
-            </p>
-        </div>
-    </div>
+    <div ng-include="endpoint.individual_partial_url"></div>
 </div>
