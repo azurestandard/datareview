@@ -15,8 +15,8 @@ var dataReviewApp = angular.module('dataReview', [
     'dataReview.controllers'
 ])
 
-dataReviewApp.run(['$rootScope', '$route', 'config', 'jsFetcher',
-    function($rootScope, $route, config, jsFetcher) {
+dataReviewApp.run(['$rootScope', 'config',
+    function($rootScope, config) {
         if (datareview_config) {
             config = datareview_config;
         }
