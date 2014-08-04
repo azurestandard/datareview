@@ -32,9 +32,12 @@ dataReviewApp.config(['$routeProvider',
     function($routeProvider) {
         $routeProvider.when('/overview', {templateUrl: 'partials/overview.html', controller: 'OverviewCtrl'});
         $routeProvider.when('/individual', {templateUrl: 'partials/individual.html', controller: 'IndividualCtrl'});
+        $routeProvider.when('/individual/:key', {templateUrl: 'partials/individual.html', controller: 'IndividualCtrl'});
         $routeProvider.when('/individual/:key/:id', {templateUrl: 'partials/individual.html', controller: 'IndividualCtrl'});
         $routeProvider.when('/bulk', {templateUrl: 'partials/bulk.html', controller: 'BulkCtrl'});
         $routeProvider.when('/bulk/:key', {templateUrl: 'partials/bulk.html', controller: 'BulkCtrl'});
+        $routeProvider.when('/bulk/:key/:type', {templateUrl: 'partials/bulk.html', controller: 'BulkCtrl'});
+        $routeProvider.when('/bulk/:key/:type/:id', {templateUrl: 'partials/bulk.html', controller: 'BulkCtrl'});
         $routeProvider.otherwise({redirectTo: '/overview'});
     }
 ]);
