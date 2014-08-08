@@ -14,7 +14,10 @@ var dataReviewApp = angular.module('dataReview', [
     'dataReview.services',
     'dataReview.directives',
     'dataReview.controllers'
-])
+]).
+config(['$httpProvider', function($httpProvider) {
+    $httpProvider.defaults.withCredentials = true;
+}]);
 
 dataReviewApp.run(['$rootScope', 'config',
     function($rootScope, config) {
