@@ -5,6 +5,7 @@ var dataReviewApp = angular.module('dataReview', [
     'config',
     'endpointFetcher',
     'jsFetcher',
+    'ngGrid',
     'ngResource',
     'ngRoute',
     'ngSanitize',
