@@ -50,48 +50,94 @@ jsFetcher.
 var endpointFetcher = angular.module('endpointFetcher', []);
 
 endpointFetcher.
-    factory('endpointFetcher', ['$resource', '$routeParams', 'config', 'jsFetcher',
-        function ($resource, $routeParams, config, jsFetcher) {
+    factory('endpointFetcher', ['$location', '$resource', '$route', '$routeParams', 'config', 'jsFetcher',
+        function ($location, $resource, $route, $routeParams, config, jsFetcher) {
             return {
-                fetch_endpoint: function ($scope, callback_fn) {
+                fetch_endpoint: function ($scope, prefetch_callback_fn, postfetch_callback_fn) {
                     if ($scope.endpoint) {
-                        $scope.endpoint.url= $scope.endpoint.url.replace(/:key/, $scope.key)
-                                                                .replace(/:id/, $scope.id)
-                                                                .replace(/:type/, $scope.type);
+                        $scope.endpoint_url = $scope.endpoint_url
+                                                    .replace(/:key/, $scope.key)
+                                                    .replace(/:type/, $scope.type)
+                                                    .replace(/:id/, $scope.id);
 
-                        var Endpoint = $resource($scope.endpoint.url);
+                        if (prefetch_callback_fn) {
+                            prefetch_callback_fn($scope.endpoint);
+                        }
+
+                        var Endpoint = $resource($scope.endpoint_url);
 
                         $scope.details = Endpoint.get({}, function() {
-                            callback_fn($scope.endpoint, $scope.details);
+                            if (postfetch_callback_fn) {
+                                postfetch_callback_fn($scope.endpoint, $scope.details);
+                            }
                         });
                     } else {
                         console.log('else');
                         // todo: alert user that no key, id and/or endpoint available
                     }
                 },
-                fetch_the_rest: function ($scope, fetch_handling_fn, endpoint_handling_fn) {
+                fetch_the_rest: function ($scope, fetch_handling_fn, endpoint_handling_prefetch_fn, endpoint_handling_fn) {
                     if ($scope.endpoint &&
                         $scope.endpoint.fetched) {
                         // we have what we need, so let's get going already
-                        this.fetch_endpoint($scope, endpoint_handling_fn);
+                        this.fetch_endpoint($scope, endpoint_handling_prefetch_fn, endpoint_handling_fn);
                     } else {
                         // fetch the rest of the remote config files
                         // (the one we already have will come from browser cache)
                         jsFetcher.fetch($scope.endpoint, fetch_handling_fn);
                     }
                 },
-                set_defaults: function ($scope) {
+                set_defaults: function ($scope, action_key) {
+                    // action_key let's us know which action to go after
+                    $scope.action_key = action_key;
+
                     // get parameters
                     $scope.key = $routeParams.key;
-                    $scope.id = $routeParams.id;
                     $scope.type = $routeParams.type;
+                    $scope.id = $routeParams.id;
 
                     // set our endpoint
                     $scope.endpoint = _.find(config.endpoints, function (endpoint) {
-                        if ($scope.key == endpoint.key) {
-                            return true;
+                        if ($scope.type) {
+                            if ($scope.key == endpoint.key &&
+                                $scope.type == endpoint.default_type) {
+                                return true;
+                            }
+                        } else {
+                            // fallback to just checking the key ...
+                            if ($scope.key == endpoint.key) {
+                                return true;
+                            }
                         }
                     });
+
+                    if ($scope.endpoint) {
+                        // endpoint_url is what fetch will go after ...
+                        var have_url = false;
+
+                        if ($scope.id) {
+                            switch (action_key) {
+                                case 'bulk':
+                                    $scope.endpoint_url = $scope.endpoint.bulk_id_url
+                                    have_url = true;
+                                    break;
+                                // case 'individual':
+                                //     $scope.endpoint_url = $scope.endpoint.individual_id_url
+                                //     break;
+                            }
+                        }
+
+                        if (!have_url) {
+                            switch (action_key) {
+                                case 'bulk':
+                                    $scope.endpoint_url = $scope.endpoint.bulk_url
+                                    break;
+                                case 'individual':
+                                    $scope.endpoint_url = $scope.endpoint.individual_url
+                                    break;
+                            }
+                        }
+                    }
                 }
             }
         }
