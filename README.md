@@ -86,6 +86,16 @@ folders in your project.
 angular-seed changes this location through the `.bowerrc` file.  Putting it in the app folder makes
 it easier to serve the files by a webserver.*
 
+### Configure your installation
+
+Setup your `datareview_config` by editing `app/index.html`:
+
+    <!-- your config script goes here (something along the lines of) ...
+         <script src="js/datareview/config.js"></script>-->
+         <script src="http://example.com/static/js/datareview/config.js"></script>
+
+which defines `datareview_config` as outlined above.
+
 ### Run the Application
 
 We have preconfigured the project with a simple development web server.  The simplest way to start
