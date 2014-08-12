@@ -17,6 +17,7 @@ var dataReviewApp = angular.module('dataReview', [
 ]).
 config(['$httpProvider', function($httpProvider) {
     $httpProvider.defaults.withCredentials = true;
+    $httpProvider.defaults.headers.common.Accept = 'application/json';
 }]);
 
 dataReviewApp.run(['$rootScope', 'config',
