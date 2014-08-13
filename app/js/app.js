@@ -10,6 +10,10 @@ angular.module('myApp', [
   'myApp.directives',
   'myApp.controllers'
 ]).
+config(['$httpProvider', function($httpProvider) {
+  $httpProvider.defaults.withCredentials = true;
+  $httpProvider.defaults.headers.common.Accept = 'application/json';
+}]).
 config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/queue', {templateUrl: 'partials/queue.html', controller: 'QueueCtrl'});
   $routeProvider.when('/detail', {templateUrl: 'partials/detail.html', controller: 'DetailCtrl'});
