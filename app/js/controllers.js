@@ -9,9 +9,7 @@ angular.module('myApp.controllers', [])
       '$scope',
       'PieceMeta',
       function($scope, PieceMeta) {
-        PieceMeta.query(function(response) {
-          $scope.queue = response;
-        });
+        $scope.queue = PieceMeta.query();
       }
     ]
   )
