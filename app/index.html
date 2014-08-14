@@ -32,8 +32,8 @@
             <ul class="nav navbar-nav">
                 <li class="active"><a href="{{ home_url }}" ng-bind-template="{{ home_label }}">Home</a></li>
                 <li><a href="#/" ng-bind-template="{{ overview_nav_label }}">Overview</a></li>
-                <li><a href="#/bulk" ng-bind-template="{{ bulk_nav_label }}">Bulk Review</a></li>
-                <li><a href="#/individual" ng-bind-template="{{ individual_nav_label }}">Individual Review</a></li>
+                <li><a href="{{ bulk_nav_url }}" ng-bind-template="{{ bulk_nav_label }}">Bulk Review</a></li>
+                <li><a href="{{ individual_nav_url }}" ng-bind-template="{{ individual_nav_label }}">Individual Review</a></li>
             </ul>
         </div><!--/.nav-collapse -->
     </div>

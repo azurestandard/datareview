@@ -4,8 +4,10 @@
 
 var dataReviewControllers = angular.module('dataReview.controllers', []);
 
-dataReviewControllers.controller('BulkCtrl', ['$scope', '$filter', '$http', '$location', '$routeParams', 'config', 'endpointFetcher',
-    function($scope, $filter, $http, $location, $routeParams, config, endpointFetcher) {
+dataReviewControllers.controller('BulkCtrl', ['$rootScope', '$scope', '$filter', '$http', '$location', '$routeParams', 'config', 'endpointFetcher',
+    function($rootScope, $scope, $filter, $http, $location, $routeParams, config, endpointFetcher) {
+
+        $rootScope.bulk_nav_url = $location.absUrl();       // set our bulk nav link to whatever we were at last
 
         $scope.$filter = $filter;               // may be needed by handling.js later
         $scope.$http = $http;                   // may be needed by handling.js later
@@ -85,8 +87,10 @@ dataReviewControllers.controller('OverviewCtrl', ['$scope', '$rootScope', '$loca
     }
 ]);
 
-dataReviewControllers.controller('IndividualCtrl', ['$scope', '$filter', '$http', '$location', '$routeParams', 'config', 'endpointFetcher',
-     function($scope, $filter, $http, $location, $routeParams, config, endpointFetcher) {
+dataReviewControllers.controller('IndividualCtrl', ['$rootScope', '$scope', '$filter', '$http', '$location', '$routeParams', 'config', 'endpointFetcher',
+     function($rootScope, $scope, $filter, $http, $location, $routeParams, config, endpointFetcher) {
+
+        $rootScope.individual_nav_url = $location.absUrl();       // set our bulk nav link to whatever we were at last
 
         $scope.$filter = $filter;               // may be needed by handling.js later
         $scope.$http = $http;                   // may be needed by handling.js later

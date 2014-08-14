@@ -29,7 +29,9 @@ dataReviewApp.run(['$rootScope', 'config',
         $rootScope.home_label = config.home_label || 'Home';
         $rootScope.overview_nav_label = config.overview_nav_label || 'Overview';
         $rootScope.bulk_nav_label = config.bulk_nav_label || 'Bulk Review';
+        $rootScope.bulk_nav_url = '#/'; // start w/ redirect to Overview; BulkCtrl will set as needed
         $rootScope.individual_nav_label = config.individual_nav_label || 'Individual Review';
+        $rootScope.individual_nav_url = '#/'; // start w/ redirect to Overview ; IndividualCtrl will set as needed
     }
 ]);
 
