@@ -18,6 +18,7 @@ dataReviewFilters.filter('htmlToPlaintext', [
             // todo: need to allow for special handling of <a href>
             return String(text).replace(/<p>/gm, '\n')     // replace <p> with \n
                                .replace(/<li>/gm, '\n')    // replace <li> with \n
+                               .replace(/&nbsp;/gm, ' ')   // replace non-breaking space with space
                                .replace(/<[^>]+>/gm, '');  // replace remaining html tags
         }
     }
