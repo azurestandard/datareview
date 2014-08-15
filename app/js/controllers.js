@@ -7,9 +7,17 @@ angular.module('myApp.controllers', [])
     'QueueCtrl',
     [
       '$scope',
+      '$routeParams',
+      '$location',
       'PieceMeta',
-      function($scope, PieceMeta) {
-        $scope.queue = PieceMeta.query();
+      function($scope, $routeParams, $location, PieceMeta) {
+        $scope.max = Math.max;
+        $scope.min = Math.min;
+        $scope.path = $location.path();
+        $scope.from = parseInt($routeParams.from || 0, 10);
+        $scope.size = parseInt($routeParams.size || 10, 10);
+        $scope.count = PieceMeta.count();
+        $scope.queue = PieceMeta.query({from: $scope.from, size: $scope.size});
       }
     ]
   )

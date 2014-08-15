@@ -1,7 +1,19 @@
 <h1>PieceMeta queue</h1>
 
-<ol>
+<p>
+  Showing {{ from + 1 }} through {{ min(from + size, count.count) }} of {{ count.count }}:
+</p>
+
+<ol start="{{ from + 1 }}">
   <li ng-repeat="item in queue">
     <a href="#/detail/{{ item.id }}">{{ item.name }}</a>
   </li>
 </ol>
+
+<a ng_if="from > 0"
+   href="#{{ path }}?from={{ max(from - size, 0) }}&size={{ size }}&q={{ query }}">
+  Previous</a>
+
+<a ng-if="from + size < count.count"
+   href="#{{ path }}?from={{ from + size }}&size={{ size }}&q={{ query }}">
+  Next</a>

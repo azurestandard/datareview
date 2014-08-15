@@ -17,6 +17,13 @@ angular.module('myApp.services', []).
             id: '@id',
           },
           {
+            'count': {
+              method: 'GET',
+              url: beehive_url + 'piece/search',
+              params: {
+                count: true,
+              },
+            },
             'query': {
               method: 'GET',
               url: beehive_url + 'piece/search',
