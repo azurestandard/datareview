@@ -4,7 +4,7 @@
   Showing {{ from + 1 }} through {{ min(from + size, count.count) }} of {{ count.count }}:
 </p>
 
-<ol start="{{ from + 1 }}">
+<ol start="{{ from + 1 }}" style="margin-left: 3em;">
   <li ng-repeat="item in queue">
     <a href="#/detail/{{ item.id }}">{{ item.name }}</a>
   </li>
