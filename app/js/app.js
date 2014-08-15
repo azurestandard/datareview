@@ -16,6 +16,6 @@ config(['$httpProvider', function($httpProvider) {
 }]).
 config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/queue', {templateUrl: 'partials/queue.html', controller: 'QueueCtrl'});
-  $routeProvider.when('/detail', {templateUrl: 'partials/detail.html', controller: 'DetailCtrl'});
+  $routeProvider.when('/detail/:id', {templateUrl: 'partials/detail.html', controller: 'DetailCtrl'});
   $routeProvider.otherwise({redirectTo: '/queue'});
 }]);

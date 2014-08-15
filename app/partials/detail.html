@@ -1,1 +1,15 @@
-<h1>PieceMeta detail</h1>
+<h1>{{ item.name }}</h1>
+
+<ng-form>
+  <div>
+    <label for="name">Name:</label><br />
+    <input type="text" id="name" ng-model="item.name"
+           size="80" />
+  </div>
+  <div>
+    <label for="description">Description:</label><br />
+    <textarea id="description" ng-model="item.description"
+              cols="80" rows="25"></textarea>
+  </div>
+  <button ng-click="save()">Save</button>
+</ng-form>

@@ -13,7 +13,9 @@ angular.module('myApp.services', []).
       function($resource, beehive_url) {
         return $resource(
           beehive_url + 'piece/:id',
-          null,
+          {
+            id: '@id',
+          },
           {
             'query': {
               method: 'GET',
