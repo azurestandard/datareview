@@ -14,10 +14,22 @@ angular.module('myApp.controllers', [])
         $scope.max = Math.max;
         $scope.min = Math.min;
         $scope.path = $location.path();
+        $scope.query = $routeParams.q;
         $scope.from = parseInt($routeParams.from || 0, 10);
         $scope.size = parseInt($routeParams.size || 10, 10);
-        $scope.count = PieceMeta.count();
-        $scope.queue = PieceMeta.query({from: $scope.from, size: $scope.size});
+
+        $scope.search = function(event) {
+          $scope.count = PieceMeta.count({
+            q: $scope.query,
+          });
+          $scope.queue = PieceMeta.query({
+            q: $scope.query,
+            from: $scope.from,
+            size: $scope.size,
+          });
+        };
+
+        $scope.search();
       }
     ]
   )

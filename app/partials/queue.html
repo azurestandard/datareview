@@ -1,5 +1,14 @@
 <h1>PieceMeta queue</h1>
 
+<ng-form>
+  <div>
+    <label for="query">Query:</label>
+    <input type="text" id="query" ng-model="query"
+           ui-keypress="{'enter':'search($event)'}"
+           size="40" />
+  </div>
+</ng-form>
+
 <p>
   Showing {{ from + 1 }} through {{ min(from + size, count.count) }} of {{ count.count }}:
 </p>
