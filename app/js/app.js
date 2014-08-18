@@ -6,6 +6,7 @@ angular.module('myApp', [
   'ngResource',
   'ngRoute',
   'ui.keypress',
+  'elasticsearch',
   'myApp.filters',
   'myApp.services',
   'myApp.directives',

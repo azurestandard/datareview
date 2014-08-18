@@ -10,12 +10,12 @@
 </ng-form>
 
 <p>
-  Showing {{ from + 1 }} through {{ min(from + size, count.count) }} of {{ count.count }}:
+  Showing {{ from + 1 }} through {{ min(from + size, count) }} of {{ count }}:
 </p>
 
 <ol start="{{ from + 1 }}" style="margin-left: 3em;">
   <li ng-repeat="item in queue">
-    <a href="#/detail/{{ item.id }}">{{ item.name }}</a>
+    <a href="#/detail/{{ item._source.id }}">{{ item._source.name }}</a>
   </li>
 </ol>
 
@@ -23,6 +23,6 @@
    href="#{{ path }}?from={{ max(from - size, 0) }}&size={{ size }}&q={{ query }}">
   Previous</a>
 
-<a ng-if="from + size < count.count"
+<a ng-if="from + size < count"
    href="#{{ path }}?from={{ from + size }}&size={{ size }}&q={{ query }}">
   Next</a>

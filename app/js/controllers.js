@@ -9,8 +9,12 @@ angular.module('myApp.controllers', [])
       '$scope',
       '$routeParams',
       '$location',
-      'PieceMeta',
-      function($scope, $routeParams, $location, PieceMeta) {
+      '$timeout',
+      'QueueClient',
+      'esFactory',
+      'setup_index',
+      function($scope, $routeParams, $location, $timeout,  QueueClient,
+               esFactory, setup_index) {
         $scope.max = Math.max;
         $scope.min = Math.min;
         $scope.path = $location.path();
@@ -19,14 +23,26 @@ angular.module('myApp.controllers', [])
         $scope.size = parseInt($routeParams.size || 10, 10);
 
         $scope.search = function(event) {
-          $scope.count = PieceMeta.count({
-            q: $scope.query,
-          });
-          $scope.queue = PieceMeta.query({
-            q: $scope.query,
+          if (!$scope.query) {
+            $scope.query = undefined;  // clear empty strings
+          }
+          QueueClient.search({
+            index: 'description_queue',
+            type: 'piece_meta',
             from: $scope.from,
             size: $scope.size,
-          });
+            q: $scope.query,
+          }).then(
+            function(response) {
+              $scope.count = response.hits.total;
+              $scope.queue = response.hits.hits;
+            },
+            function(error) {
+              console.log(error.message);
+              setup_index();
+              $timeout($scope.search, 2000);
+            }
+          );
         };
 
         $scope.search();

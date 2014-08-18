@@ -5,6 +5,7 @@
 angular.module('myApp.services', []).
   value('version', '0.1').  // application version
   value('beehive_url', 'https://beehive.azurestandard.com/').
+  value('elasticsearch_url', 'http://es.azurestandard.com:9200/').
   factory(
     'PieceMeta',
     [
@@ -94,5 +95,93 @@ angular.module('myApp.services', []).
           }
         );
       },
+    ]
+  ).
+  service(
+    'QueueClient',
+    [
+      'elasticsearch_url',
+      'esFactory',
+      function (elasticsearch_url, esFactory) {
+        return esFactory({
+          host: elasticsearch_url,
+          apiVersion: "1.3",
+          //log: 'trace',
+        });
+      }
+    ]
+  ).
+  factory(
+    'setup_index',
+    [
+      '$q',
+      'PieceMeta',
+      'QueueClient',
+      'esFactory',
+      function ($q, PieceMeta, QueueClient, esFactory) {
+        var _piece_meta_query_factory = function(from, size) {
+          return function(result) {
+            return PieceMeta.query({from: from, size: size}).$promise;
+          };
+        }
+
+        return function() {
+          QueueClient.indices.create({
+            index: 'description_queue',
+            body: {
+              mappings: {
+                piece_meta: {
+                  properties: {
+                    id: {
+                      type: 'integer',
+                      store: true,
+                      norms: {enabled: false},
+                    },
+                    name: {
+                      type: 'string',
+                      store: true,
+                    },
+                    editor: {
+                      type: 'string',
+                      store: true,
+                      index: 'not_analyzed',
+                    },
+                    claimed: {type: 'date'},
+                    finished: {type: 'date'},
+                  },
+                },
+              },
+            },
+          }).then(function(response) {
+            return PieceMeta.count().$promise;
+          }).then(function(response) {
+            var count = response.count;
+            var size = 10;
+            var promise = $q.when(null);
+            for (var from = 0; from < count; from += size) {
+              promise = promise.then(
+                _piece_meta_query_factory(from, size)
+              ).then(function(response) {
+                var promises = [];
+                  for (var i = 0; i < response.length; i++) {
+                  var piece_meta = response[i];
+                  promises.push(QueueClient.create({
+                    index: 'description_queue',
+                    type: 'piece_meta',
+                    body: {
+                      id: piece_meta.id,
+                      name: piece_meta.name,
+                    },
+                  }));
+                }
+                return $q.all(promises);
+              });
+            }
+            return promise;
+          }).catch(function(error) {
+            console.log(error);
+          });
+        };
+      }
     ]
   );
