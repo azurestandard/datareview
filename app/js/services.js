@@ -141,6 +141,11 @@ angular.module('myApp.services', []).
                       type: 'string',
                       store: true,
                     },
+                    brand: {
+                      type: 'integer',
+                      store: true,
+                      norms: {enabled: false},
+                    },
                     editor: {
                       type: 'string',
                       store: true,
@@ -171,6 +176,7 @@ angular.module('myApp.services', []).
                     body: {
                       id: piece_meta.id,
                       name: piece_meta.name,
+                      brand: piece_meta.brand,
                     },
                   }));
                 }
