@@ -174,6 +174,7 @@ angular.module('myApp.services', []).
                     index: 'description_queue',
                     type: 'piece_meta',
                     id: piece_meta.id,
+                    refresh: from + size >= count && i + 1 == response.length,
                     body: {
                       id: piece_meta.id,
                       name: piece_meta.name,

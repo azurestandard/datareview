@@ -57,6 +57,7 @@ angular.module('myApp.controllers', [])
             index: 'description_queue',
             type: 'piece_meta',
             id: item._id,
+            refresh: true,
             body: {
               doc: {
                 editor: $scope.name,
@@ -123,6 +124,7 @@ angular.module('myApp.controllers', [])
               index: 'description_queue',
               type: 'piece_meta',
               id: $scope.queue_item._id,
+              refresh: true,
               body: {
                 doc: {
                   name: $scope.item.name,
