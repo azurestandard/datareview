@@ -173,6 +173,7 @@ angular.module('myApp.services', []).
                   promises.push(QueueClient.create({
                     index: 'description_queue',
                     type: 'piece_meta',
+                    id: piece_meta.id,
                     body: {
                       id: piece_meta.id,
                       name: piece_meta.name,
