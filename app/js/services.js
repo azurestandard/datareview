@@ -184,4 +184,22 @@ angular.module('myApp.services', []).
         };
       }
     ]
+  ).
+  factory(
+    'username',
+    [
+      '$http',
+      'beehive_url',
+      function($http, beehive_url) {
+        return $http.get(
+          beehive_url + 'beekeeper/me',
+          {
+            headers: {
+              'Accept': 'application/json',
+            },
+            withCredentials: true,
+          }
+        );
+      }
+    ]
   );
