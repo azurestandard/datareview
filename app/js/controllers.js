@@ -66,7 +66,7 @@ angular.module('myApp.controllers', [])
               detect_noop: true,
             }
           }).then(function(result) {
-            $timeout($scope.search, 500);
+            $scope.path = $location.path('/detail/' + item._source.id);
           });
         };
 
