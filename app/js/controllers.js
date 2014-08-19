@@ -61,7 +61,8 @@ angular.module('myApp.controllers', [])
               doc: {
                 editor: $scope.name,
                 claimed: (new Date()).toISOString(),
-              }
+              },
+              detect_noop: true,
             }
           }).then(function(result) {
             $timeout($scope.search, 500);
@@ -126,7 +127,8 @@ angular.module('myApp.controllers', [])
                 doc: {
                   name: $scope.item.name,
                   finished: (new Date()).toISOString(),
-                }
+                },
+                detect_noop: true,
               }
             });
           }).then(function(result) {
