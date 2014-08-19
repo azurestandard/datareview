@@ -52,6 +52,22 @@ angular.module('myApp.controllers', [])
           );
         };
 
+        $scope.claim = function(item) {
+          QueueClient.update({
+            index: 'description_queue',
+            type: 'piece_meta',
+            id: item._id,
+            body: {
+              doc: {
+                editor: $scope.name,
+                claimed: (new Date()).toISOString(),
+              }
+            }
+          }).then(function(result) {
+            $timeout($scope.search, 500);
+          });
+        };
+
         $scope.search();
       }
     ]

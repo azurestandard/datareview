@@ -13,11 +13,34 @@
   Showing {{ from + 1 }} through {{ min(from + size, count) }} of {{ count }}:
 </p>
 
-<ol start="{{ from + 1 }}" style="margin-left: 3em;">
-  <li ng-repeat="item in queue">
-    <a href="#/detail/{{ item._source.id }}">{{ item._source.name }}</a>
-  </li>
-</ol>
+<table>
+  <thead>
+    <tr>
+      <th><!-- index --></th>
+      <th>Editor</th>
+      <th>PieceMeta</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="item in queue">
+      <td>{{ from + $index + 1 }}</td>
+
+      <td ng-if="item._source.finished">finished</td>
+      <td ng-if="!item._source.finished && item._source.editor">
+        {{ item._source.editor }}
+      </td>
+      <td ng-if="!item._source.editor">
+        <button ng-click="claim(item)">
+          Claim
+        </button>
+      </td>
+
+      <td>
+        <a href="#/detail/{{ item._source.id }}">{{ item._source.name }}</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 <a ng_if="from > 0"
    href="#{{ path }}?from={{ max(from - size, 0) }}&size={{ size }}&q={{ query }}">
