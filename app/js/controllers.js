@@ -79,25 +79,59 @@ angular.module('myApp.controllers', [])
       '$routeParams',
       '$location',
       'PieceMeta',
-      function($scope, $routeParams, $location, PieceMeta) {
-        $scope.item = PieceMeta.get({id: $routeParams.id});
-        $scope.save = function() {
-          PieceMeta.save(
-            $scope.item,
-            function(value, responseHeaders) {  // success
-              $location.path('/queue');
-            },
-            function(httpResponse) {  // error
-              if (httpResponse.status == 400) {
-                // TODO: display errors from httpResponse.data
-                // {'$field': ['$error_1', '$error_2', ...], ...}
-                console.log(httpResponse.data);
-              } else {
-                // TODO: display lower-level error
-                console.log(httpResponse.status, httpResponse.statusText);
+      'QueueClient',
+      'esFactory',
+      'username',
+      function($scope, $routeParams, $location, PieceMeta, QueueClient,
+               esFactory, username) {
+        PieceMeta.get({id: $routeParams.id}).$promise.then(function(result) {
+          $scope.item = result;
+          return username;
+        }).then(function(result) {
+          $scope.name = result.data.full_name;
+          return QueueClient.search({
+            index: 'description_queue',
+            type: 'piece_meta',
+            body: {
+              query: {
+                match: {
+                  id: $scope.item.id,
+                }
               }
             }
-          );
+          });
+        }).then(function(result) {
+          if (result.hits.hits.length == 0) {
+            throw new Error(
+              'no entry found for ' + $scope.item.name +
+              ' (' + $scope.item.id + ') in Elasticsearch');
+          } else if (result.hits.hits.length != 1) {
+            throw new Error(
+              result.hits.hits.length + ' entries found for ' +
+              $scope.item.name + ' (' + $scope.item.id +
+              ') in Elasticsearch');
+          }
+          $scope.queue_item = result.hits.hits[0];
+        });
+
+        $scope.save = function() {
+          PieceMeta.save(
+            $scope.item
+          ).$promise.then(function(result) {
+            return QueueClient.update({
+              index: 'description_queue',
+              type: 'piece_meta',
+              id: $scope.queue_item._id,
+              body: {
+                doc: {
+                  name: $scope.item.name,
+                  finished: (new Date()).toISOString(),
+                }
+              }
+            });
+          }).then(function(result) {
+            $scope.path = $location.path('/queue');
+          });
         };
       }
     ]

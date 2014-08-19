@@ -11,5 +11,12 @@
     <textarea id="description" ng-model="item.description"
               cols="80" rows="25"></textarea>
   </div>
-  <button ng-click="save()">Save</button>
+  <button ng-if="queue_item._source.editor == name"
+          ng-click="save()">Save</button>
+  <p ng-if="queue_item._source.editor && queue_item._source.editor != name">
+    Claimed by {{ queue_item._source.editor }}.
+  </p>
+  <p ng-if="!queue_item._source.editor">
+    Unclaimed.
+  </p>
 </ng-form>
