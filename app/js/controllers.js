@@ -100,13 +100,13 @@ dataReviewControllers.controller('OverviewCtrl', [
     }
 ]);
 
-dataReviewControllers.controller('IndividualCtrl', [
+dataReviewControllers.controller('DetailCtrl', [
     '$rootScope', '$scope', '$filter', '$http', '$location', '$routeParams',
     'config', 'dataReviewServices', 'endpointFetcher',
     function($rootScope, $scope, $filter, $http, $location, $routeParams,
              config, dataReviewServices, endpointFetcher) {
 
-        $rootScope.individual_nav_url = $location.absUrl();       // set our bulk nav link to whatever we were at last
+        $rootScope.detail_nav_url = $location.absUrl();       // set our bulk nav link to whatever we were at last
 
         $scope.user = dataReviewServices.get_user(function (_user) {
             $scope.user = _user;
@@ -120,29 +120,29 @@ dataReviewControllers.controller('IndividualCtrl', [
         $scope.$routeParams = $routeParams;     // may be needed by handling.js later
 
         function endpoint_handling_prefetch(endpoint) {
-            if (!endpoint.individual_handling_prefetch_fn) {
-                endpoint.individual_handling_prefetch_fn = handle_endpoint_individual_prefetch;
+            if (!endpoint.detail_handling_prefetch_fn) {
+                endpoint.detail_handling_prefetch_fn = handle_endpoint_detail_prefetch;
             }
 
-            endpoint.individual_handling_prefetch_fn($scope, $filter);
+            endpoint.detail_handling_prefetch_fn($scope, $filter);
         }
 
         function endpoint_handling(endpoint, details) {
-            if (!endpoint.individual_handling_fn) {
-                endpoint.individual_handling_fn = handle_endpoint_individual;
+            if (!endpoint.detail_handling_fn) {
+                endpoint.detail_handling_fn = handle_endpoint_detail;
             }
 
-            endpoint.individual_handling_fn($scope, $filter, details);
+            endpoint.detail_handling_fn($scope, $filter, details);
         }
 
         function refresh() {
-            $scope.individual_text = config.individual_text || '';
+            $scope.detail_text = config.detail_text || '';
 
-            endpointFetcher.set_defaults($scope, 'individual');
+            endpointFetcher.set_defaults($scope, 'detail');
 
             if ($scope.endpoint) {
-                $scope.individual_label = ($scope.endpoint.individual_label) ? $scope.endpoint.individual_label : 'Individual Review';
-                $scope.individual_text = ($scope.endpoint.individual_text) ? $scope.endpoint.individual_text : '';
+                $scope.detail_label = ($scope.endpoint.detail_label) ? $scope.endpoint.detail_label : 'Detail Review';
+                $scope.detail_text = ($scope.endpoint.detail_text) ? $scope.endpoint.detail_text : '';
             }
 
             endpointFetcher.fetch_the_rest($scope, refresh, endpoint_handling_prefetch, endpoint_handling);
