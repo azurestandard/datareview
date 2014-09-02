@@ -1,24 +1,245 @@
 <!-- goal is to move this out to CORS-compatiable remote, if desired -->
+<style>
+.counter {
+    font-style: italic;
+}
+.editable {
+    background-color: LemonChiffon;
+}
+.editableWarning {
+    background-color: Yellow;
+}
+.readonly {
+    background-color: LightCyan;
+}
+.warning {
+    background-color: Orange;
+}
+</style>
 <div class="row" ng-if="endpoint">
-    <div class="col-md-6">
-        <p>
-            <b>Original Description:</b>
-            <div ng-bind-html="left_side"></div>
+    <div class="col-md-12">
+        <p class="text-center">
+            <b ng-if="brand">Brand:</b>
+            <a ng-href="{{ brand_url }}" ng-if="brand">{{ brand.name }}</a> &nbsp;
+
+            <b ng-if="vendor_urls.length">Vendors:</b>
+            <span ng-repeat="vendor in vendor_urls" ng-if="vendor_urls.length">
+                <a ng-href="{{ vendor.url }}">{{ vendor.name }}</a> &nbsp;
+            </span>
+
+            <b ng-if="category_urls.length">Categories:</b>
+            <span ng-repeat="category in category_urls" ng-if="category_urls.length">
+                <a ng-href="{{ category.url }}">{{ category.name }}</a>
+            </span>
         </p>
-    </div>
-    <div class="col-md-6">
-        <div ng-bind-html="right_side"></div>
     </div>
 </div>
 <div class="row" ng-if="endpoint">
     <div class="col-md-6">
         <p>
-            <b>Parsed Info:</b>
-            <div ng-bind-html="parsed_text"></div>
+            <b>Original Description:</b>
+            <textarea name="orig_description"
+                      ng-class="(is_editing) ? 'editable' : 'readonly'"
+                      ng-readonly="!is_editing"
+                      rows="17"
+                      cols="67"
+                      maxlength="4096"
+                      ng-minlength="1"
+                      ng-model="orig_description"
+                      required
+                      highlight-on-error></textarea>
+            <span class="counter">{{ orig_description.length }} / 4096 characters</span>
+        </p>
+        <button type="button"
+                class="btn btn-primary"
+                ng-show="is_editing"
+                ng-click="parse_now(this)">
+            Parse Again
+        </button>
+        <div>
+            <img ng-src="{{ image }}" class="text-center detailImage" />
+        </div>
+        <div style="padding-top:35px;">
+            <accordion close-others="true">
+                <accordion-group heading="Parsed Information">
+                    <div ng-bind-html="parsed_text"></div>
+                </accordion-group>
+                <accordion-group heading="Parsing Rules">
+                    <div>{{ parsing_rules }}</div>
+                </accordion-group>
+            </accordion>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <p>
+        <b>Revised Description:</b>
+            <textarea name="revised_description"
+                      class="(is_editing) ? 'editable' : 'readonly'"
+                      ng-readonly="!is_editing"
+                      rows="10"
+                      cols="67"
+                      maxlength="4096"
+                      ng-minlength="1"
+                      ng-model="revised_description"
+                      required
+                      highlight-on-error></textarea>
+            <span class="counter">{{ revised_description.length }} / 4096 characters</span>
+        </p>
+        <p style='padding-top:4px;'>
+            <b>Uncategorized (will be lost if not put elsewhere):</b>
+            <textarea name="uncategorized"
+                      class="(is_editing) ? 'editable' : 'readonly'"
+                      ng-readonly="!is_editing"
+                      rows="4"
+                      cols="67"
+                      maxlength="4096"
+                      ng-minlength="1"
+                      ng-model="uncategorized"></textarea>
+            <span class="counter">{{ uncategorized.length }} / 4096 characters</span>
+        </p>
+        <button type="button"
+            class="btn btn-primary"
+            ng-show="is_editing"
+            ng-click="move_uncat_to_desc(this)">
+            Move Uncategorized to Revised Description
+        </button>
+        <p style='padding-top:13px;'>
+            <b>Product Features (Traits) (most likely make list w/ button to add/remove items):</b>
+            <textarea name="traits"
+                      class="readonly"
+                      rows="3"
+                      cols="67"
+                      maxlength="4096"
+                      ng-minlength="1"
+                      ng-model="traits"
+                      ng-readonly="true"></textarea>
+        </p>
+        <p style="padding-top:4px;">
+            <b>Ingredients:</b>
+            <textarea name="ingredients"
+                      rows="7"
+                      cols="67"
+                      maxlength="4096"
+                      ng-minlength="1"
+                      ng-model="ingredients"
+                      ng-readonly="true"
+                      class="readonly"></textarea>
+            <span class="counter">{{ ingredients.length }} characters</span>
         </p>
         <p>
-            <b>Parsing Rules:</b>
-            <div>{{ parsing_rules }}</div>
+            <b>Ingredient Metadata (most likely make list w/ ability to edit items):</b>
+            <textarea name="ingredient_metadata"
+                      rows="7"
+                      cols="67"
+                      maxlength="4096"
+                      ng-minlength="1"
+                      ng-model="ingredient_metadata"
+                      ng-readonly="true"></textarea>
+        </p>
+        <p>
+            <b>Ingredient Statement:</b>
+            <textarea name="ingredient_statement"
+                      class="(is_editing) ? 'editable' : 'readonly'"
+                      ng-readonly="!is_editing"
+                      rows="3"
+                      cols="67"
+                      maxlength="4096"
+                      ng-minlength="1"
+                      ng-model="ingredient_statement"></textarea>
+            <span class="counter">{{ ingredient_statement.length }} / 4096 characters</span>
+        </p>
+        <p>
+            <b>Allergens (most likely make list w/ button to add/remove items):</b>
+            <textarea name="allergens"
+                      class="warning"
+                      rows="5"
+                      cols="67"
+                      maxlength="4096"
+                      ng-minlength="1"
+                      ng-model="allergens"
+                      ng-readonly="true"></textarea>
+        </p>
+        <p>
+            <b>Allergen Statement:</b>
+            <textarea name="allergen_statement"
+                      class="(is_editing) ? 'editable' : 'readonly'"
+                      ng-readonly="!is_editing"
+                      rows="7"
+                      cols="67"
+                      maxlength="4096"
+                      ng-minlength="1"
+                      ng-model="allergen_statement"></textarea>
+            <span class="counter">{{ allergen_statement.length }} / 4096 characters</span>
+        </p>
+        <p>
+            <b>Perishability Statement:</b>
+            <textarea name="perishability_statement"
+                      class="(is_editing) ? 'editable' : 'readonly'"
+                      ng-readonly="!is_editing"
+                      rows="3"
+                      cols="67"
+                      maxlength="4096"
+                      ng-minlength="1"
+                      ng-model="perishability_statement"></textarea>
+            <span class="counter">{{ perishability_statement.length }} / 4096 characters</span>
+        </p>
+        <p>
+            <b>Location Statement:</b>
+            <textarea name="location_statement"
+                      class="(is_editing) ? 'editable' : 'readonly'"
+                      ng-readonly="!is_editing"
+                      rows="3"
+                      cols="67"
+                      maxlength="4096"
+                      ng-minlength="1"
+                      ng-model="location_statement"></textarea>
+            <span class="counter">{{ location_statement.length }} / 4096 characters</span>
+        </p>
+        <p>
+            <b>Nutrition Facts (likely be a key value kind of thing):</b>
+            <textarea name="nutrition_facts"
+                      class="(is_editing) ? 'editable' : 'readonly'"
+                      ng-readonly="!is_editing"
+                      rows="3"
+                      cols="67"
+                      maxlength="4096"
+                      ng-minlength="1"
+                      ng-model="nutrition_facts"></textarea>
+            <span class="counter">{{ nutrition_facts.length }} / 4096 characters</span>
+        </p>
+        <p>
+            <b>Nutrient Amounts (% DV) (likely be a key value kind of thing):</b>
+            <textarea name="nutrient_amounts"
+                      class="(is_editing) ? 'editable' : 'readonly'"
+                      ng-readonly="!is_editing"
+                      rows="10"
+                      cols="67"
+                      maxlength="4096"
+                      ng-minlength="1"
+                      ng-model="nutrient_amounts"></textarea>
+            <span class="counter">{{ nutrient_amounts.length }} / 4096 characters</span>
+        </p>
+    </div>
+</div>
+<div class="row" ng-if="endpoint">
+    <div class="col-md-6">
+    </div>
+    <div class="col-md-6" ng-show="is_reviewed && !is_editing">
+        <p class='text-right'>
+            <button type="button"
+                    class="btn btn-primary"
+                    ng-click="unmark_as_reviewed(this)">
+                Edit (Unmark as Reviewed)
+            </button>
+        </p>
+    </div>
+    <div class="col-md-6" ng-show="is_editing && !is_reviewed">
+        <p class='text-right'>
+            <button type="button"
+                    class="btn btn-primary"
+                    ng-click="mark_as_reviewed(this)">
+                Mark as Reviewed
+            </button>
         </p>
     </div>
 </div>
