@@ -222,6 +222,7 @@ config.
         return datareview_config; // defined in dev-supplied config.js; alternatively, define config here
     });
 
+
 var jsFetcher = angular.module('jsFetcher', []);
 
 jsFetcher.
@@ -264,22 +265,42 @@ endpointFetcher.
             return {
                 fetch_endpoint: function ($scope, prefetch_callback_fn, postfetch_callback_fn) {
                     if ($scope.endpoint) {
-                        $scope.endpoint_url = $scope.endpoint_url
-                                                    .replace(/:key/, $scope.key)
-                                                    .replace(/:type/, $scope.type)
-                                                    .replace(/:id/, $scope.id);
+                        if ($scope.endpoint_url) {
+                            $scope.endpoint_url = $scope.endpoint_url
+                                                        .replace(/:key/, $scope.key)
+                                                        .replace(/:type/, $scope.type)
+                                                        .replace(/:id/, $scope.id);
+                        }
 
                         if (prefetch_callback_fn) {
                             prefetch_callback_fn($scope.endpoint);
                         }
 
-                        var Endpoint = $resource($scope.endpoint_url);
+                        if ($scope.handling_fetch_fn) {
+                            $scope.handling_fetch_fn(postfetch_callback_fn);
+                        } else {
+                            var withCredentials = $scope.endpoint.withCredentials ? $scope.endpoint.withCredentials : false;
 
-                        $scope.details = Endpoint.get({}, function() {
-                            if (postfetch_callback_fn) {
-                                postfetch_callback_fn($scope.endpoint, $scope.details);
+                            if ($scope.endpoint_url.indexOf($scope.search.base_url) >= 0) {
+                                withCredentials = $scope.search.withCredentials;
                             }
-                        });
+
+                            var Endpoint = $resource($scope.endpoint_url, {}, {
+                                get: {
+                                    method: 'GET',
+                                    headers: {
+                                        'Accept': 'application/json',
+                                    },
+                                    withCredentials: withCredentials
+                                }
+                            });
+
+                            $scope.details = Endpoint.get({}, function() {
+                                if (postfetch_callback_fn) {
+                                    postfetch_callback_fn($scope.endpoint, $scope.details);
+                                }
+                            });
+                        }
                     } else {
                         console.log('else');
                         // todo: alert user that no key, id and/or endpoint available
@@ -303,7 +324,7 @@ endpointFetcher.
 
                     // get parameters
                     $scope.key = $routeParams.key;
-                    $scope.type = $routeParams.type;
+                    $scope.type = ($routeParams.type) ? $routeParams.type : $scope.type;
                     $scope.id = $routeParams.id;
 
                     // set our endpoint
