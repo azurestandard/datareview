@@ -70,6 +70,120 @@ dataReviewServices.
     ]);
 
 
+var es_client = angular.module('es_client', []);
+
+es_client.service('es_client', function (config, esFactory) {
+    return esFactory({
+        host: config.search.base_url,
+        apiVersion: '1.3' //,
+        // log: 'trace'
+    })
+});
+
+
+var es = angular.module('es', []);
+
+es.
+    factory('es', ['config', 'es_client',
+        function (config, es_client) {
+            var _client = es_client;
+            var _index = config.search.index;
+            var _type = undefined;          // must be set via set_type()
+
+            var es = {
+                client: function() {
+                    return _client;
+                },
+                count: function (body, callback_fn) {
+                    _client.count({
+                        index: _index,
+                        type: _type,
+                        body: body
+                    }, function (error, response) {
+                        if (callback_fn) {
+                            callback_fn(error, response);
+                        }
+                    });
+                },
+                get: function (id, callback_fn) {
+                    _client.get({
+                        index: _index,
+                        type: _type,
+                        id: id
+                    }, function (error, response) {
+                        if (callback_fn) {
+                            callback_fn(error, response);
+                        }
+                    });
+                },
+                get_type: function () {
+                    return _type;
+                },
+                index: function (id, body, callback_fn) {
+                    _client.index({
+                        index: _index,
+                        type: _type,
+                        id: id,
+                        refresh: true,
+                        body: body
+                    }, function (error, response) {
+                        if (callback_fn) {
+                            callback_fn(error, response);
+                        }
+                    });
+                },
+                ping: function () {
+                    _client.ping({
+                        requestTimeout: 1000,
+                        // undocumented params are appended to the query string
+                        hello: "elasticsearch!"
+                    }, function (error) {
+                        if (error) {
+                            console.error('elasticsearch cluster is down!');
+                        } else {
+                            console.log('All is well');
+                        }
+                    });
+                },
+                search: function (body, callback_fn, from, size, sort, q) {
+                    _client.search({
+                        index: _index,
+                        type: _type,
+                        from: (from >= 0) ? from : undefined,
+                        size: (size) ? size : undefined,
+                        sort: (sort) ? sort : undefined,
+                        q: (q) ? q : undefined,
+                        body: (body) ? body : undefined
+                    },
+                    function(error, response) {
+                        if (callback_fn) {
+                            callback_fn(error, response);
+                        }
+                    });
+                },
+                set_type: function (type) {
+                    _type = type;
+                },
+                update: function (id, body, callback_fn) {
+                    _client.update({
+                        index: _index,
+                        type: _type,
+                        id: id,
+                        refresh: true,
+                        body: body
+                    }, function (error, response) {
+                        if (callback_fn) {
+                            callback_fn(error, response);
+                        }
+                    });
+                }
+            }
+
+            return es;
+        }
+    ]);
+
+
 var config = angular.module('config', []);
 
 config.

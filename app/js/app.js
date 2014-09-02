@@ -3,7 +3,10 @@
 // Declare app level module which depends on filters, and services
 var dataReviewApp = angular.module('dataReview', [
     'config',
+    'elasticsearch',
     'endpointFetcher',
+    'es_client',
+    'es',
     'jsFetcher',
     'ngGrid',
     'ngResource',
