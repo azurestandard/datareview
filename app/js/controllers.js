@@ -4,11 +4,19 @@
 
 var dataReviewControllers = angular.module('dataReview.controllers', []);
 
-dataReviewControllers.controller('BulkCtrl', ['$rootScope', '$scope', '$filter', '$http', '$location', '$routeParams', 'config', 'endpointFetcher',
-    function($rootScope, $scope, $filter, $http, $location, $routeParams, config, endpointFetcher) {
-
+dataReviewControllers.controller('BulkCtrl', [
+    '$rootScope', '$scope', '$filter', '$http', '$location', '$routeParams',
+    'config', 'dataReviewServices', 'endpointFetcher',
+    function($rootScope, $scope, $filter, $http, $location, $routeParams,
+             config, dataReviewServices, endpointFetcher) {
         $rootScope.bulk_nav_url = $location.absUrl();       // set our bulk nav link to whatever we were at last
 
+        $scope.user = dataReviewServices.get_user(function (_user) {
+            $scope.user = _user;
+        });
+
+        // may be needed by handling.js later ...
+        $scope.dataReviewServices = dataReviewServices;
         $scope.$filter = $filter;               // may be needed by handling.js later
         $scope.$http = $http;                   // may be needed by handling.js later
         $scope.$location = $location;           // may be needed by handling.js later
@@ -45,8 +53,13 @@ dataReviewControllers.controller('BulkCtrl', ['$rootScope', '$scope', '$filter',
     }
 ]);
 
-dataReviewControllers.controller('OverviewCtrl', ['$scope', '$rootScope', '$location', '$route', 'config', 'jsFetcher',
-    function($scope, $rootScope, $location, $route, config, jsFetcher) {
+dataReviewControllers.controller('OverviewCtrl', [
+    '$scope', '$rootScope', '$location', '$route', 'config', 'dataReviewServices', 'jsFetcher',
+    function($scope, $rootScope, $location, $route, config, dataReviewServices, jsFetcher) {
+
+        $scope.user = dataReviewServices.get_user(function (_user) {
+            $scope.user = _user;
+        });
 
         function reset_defaults() {
             $scope.overview_label = config.overview_label || 'Overview';
@@ -87,11 +100,20 @@ dataReviewControllers.controller('OverviewCtrl', ['$scope', '$rootScope', '$loca
     }
 ]);
 
-dataReviewControllers.controller('IndividualCtrl', ['$rootScope', '$scope', '$filter', '$http', '$location', '$routeParams', 'config', 'endpointFetcher',
-     function($rootScope, $scope, $filter, $http, $location, $routeParams, config, endpointFetcher) {
+dataReviewControllers.controller('IndividualCtrl', [
+    '$rootScope', '$scope', '$filter', '$http', '$location', '$routeParams',
+    'config', 'dataReviewServices', 'endpointFetcher',
+    function($rootScope, $scope, $filter, $http, $location, $routeParams,
+             config, dataReviewServices, endpointFetcher) {
 
         $rootScope.individual_nav_url = $location.absUrl();       // set our bulk nav link to whatever we were at last
 
+        $scope.user = dataReviewServices.get_user(function (_user) {
+            $scope.user = _user;
+        });
+
+        // may be needed by handling.js later ...
+        $scope.dataReviewServices = dataReviewServices;
         $scope.$filter = $filter;               // may be needed by handling.js later
         $scope.$http = $http;                   // may be needed by handling.js later
         $scope.$location = $location;           // may be needed by handling.js later

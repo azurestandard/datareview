@@ -5,8 +5,8 @@
 var dataReviewServices = angular.module('dataReview.services', []);
 
 dataReviewServices.
-    factory('dataReviewServices', ['config',
-        function (config) {
+    factory('dataReviewServices', ['config', '$http',
+        function (config, $http) {
             var items = [];
             var num_items_done = 0;
             var search_info = {}
@@ -15,6 +15,9 @@ dataReviewServices.
             var selected_detail_id = -1;
             var total_items = 0;
             var type = '';
+            var _user = undefined;
+            var _user_endpoint_url = config.user_endpoint.url;
+            var _user_endpoint_withCredentials = config.user_endpoint.withCredentials;
 
             return {
                 get_items: function () {
@@ -40,6 +43,34 @@ dataReviewServices.
                 },
                 get_type: function () {
                     return type;
+                },
+                get_user: function (callback_fn) {
+                    if (_user) {
+                        return _user;
+                    } else {
+                        $http.get(
+                            _user_endpoint_url,
+                            {
+                                headers: {
+                                    'Accept': 'application/json',
+                                },
+                                withCredentials: _user_endpoint_withCredentials
+                            }
+                        ).success(function(data, status, headers, config) {
+                            // this callback will be called asynchronously
+                            // when the response is available
+                            _user = data;
+
+                            if (callback_fn) {
+                                callback_fn(_user);
+                            }
+                        }).
+                        error(function(data, status, headers, config) {
+                            // called asynchronously if an error occurs
+                            // or server returns response with an error status.
+                            console.log('error status:', status, 'data:', data);
+                        });
+                    }
                 },
                 set_items: function (new_items) {
                     items = new_items;
