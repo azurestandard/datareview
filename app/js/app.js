@@ -28,12 +28,17 @@ dataReviewApp.run(['$rootScope', 'config',
         if (datareview_config) {
             config = datareview_config;
         }
-        $rootScope.home_url = config.home_url || '#';
-        $rootScope.home_label = config.home_label || 'Home';
+
+        $rootScope.home = {
+            label: (config.home && config.home.label) ? config.home.label : 'Home',
+            url: (config.home && config.home.url) ? config.home.url : '#'
+        }
+
         $rootScope.overview_nav_label = config.overview_nav_label || 'Overview';
-        $rootScope.bulk_nav_label = config.bulk_nav_label || 'Bulk Review';
+        $rootScope.bulk_nav_label = (config.bulk && config.bulk.nav_label) ? config.bulk.nav_label : 'Bulk Review';
         $rootScope.bulk_nav_url = '#/'; // start w/ redirect to Overview; BulkCtrl will set as needed
-        $rootScope.detail_nav_label = config.detail_nav_label || 'Detail Review';
+
+        $rootScope.detail_nav_label = (config.detail && config.detail.nav_label) ? config.detail.nav_label : 'Detail Review';
         $rootScope.detail_nav_url = '#/'; // start w/ redirect to Overview ; DetailCtrl will set as needed
     }
 ]);

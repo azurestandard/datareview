@@ -230,13 +230,13 @@ jsFetcher.
             return {
                 fetch: function (endpoint, callback_fn) {
                     if (endpoint &&
-                        endpoint.js_urls) {
+                        endpoint.js.urls) {
                         var js_urls = [];
 
                         // make use of our base url if we have one
-                        _.each(endpoint.js_urls, function (js_url, index, list) {
-                            if (endpoint.js_base_url) {
-                                js_urls.push(endpoint.js_base_url + js_url);
+                        _.each(endpoint.js.urls, function (js_url, index, list) {
+                            if (endpoint.js.base_url) {
+                                js_urls.push(endpoint.js.base_url + js_url);
                             } else {
                                 js_urls.push(js_url);
                             }
@@ -299,6 +299,7 @@ endpointFetcher.
                 set_defaults: function ($scope, action_key) {
                     // action_key let's us know which action to go after
                     $scope.action_key = action_key;
+                    $scope.search = config.search;
 
                     // get parameters
                     $scope.key = $routeParams.key;
@@ -324,25 +325,19 @@ endpointFetcher.
                         // endpoint_url is what fetch will go after ...
                         var have_url = false;
 
-                        if ($scope.id) {
-                            switch (action_key) {
-                                case 'bulk':
-                                    $scope.endpoint_url = $scope.endpoint.bulk_id_url
-                                    have_url = true;
-                                    break;
-                                // case 'individual':
-                                //     $scope.endpoint_url = $scope.endpoint.individual_id_url
-                                //     break;
-                            }
+                        if ($scope.id &&
+                            action_key == 'bulk') {
+                            $scope.endpoint_url = $scope.endpoint.bulk.item_url
+                            have_url = true;
                         }
 
                         if (!have_url) {
                             switch (action_key) {
                                 case 'bulk':
-                                    $scope.endpoint_url = $scope.endpoint.bulk_url
+                                    $scope.endpoint_url = $scope.endpoint.bulk.url
                                     break;
-                                case 'individual':
-                                    $scope.endpoint_url = $scope.endpoint.individual_url
+                                case 'detail':
+                                    $scope.endpoint_url = $scope.endpoint.detail.url
                                     break;
                             }
                         }

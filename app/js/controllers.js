@@ -23,27 +23,27 @@ dataReviewControllers.controller('BulkCtrl', [
         $scope.$routeParams = $routeParams;     // may be needed by handling.js later
 
         function endpoint_handling_prefetch(endpoint) {
-            if (!endpoint.bulk_handling_prefetch_fn) {
-                endpoint.bulk_handling_prefetch_fn = handle_endpoint_bulk_prefetch;
+            if (!endpoint.bulk.handling_prefetch_fn) {
+                endpoint.bulk.handling_prefetch_fn = handle_endpoint_bulk_prefetch;
             }
 
-            endpoint.bulk_handling_prefetch_fn($scope, $filter);
+            endpoint.bulk.handling_prefetch_fn($scope, $filter);
         }
 
-        function endpoint_handling(endpoint, details) {
-            if (!endpoint.bulk_handling_fn) {
-                endpoint.bulk_handling_fn = handle_endpoint_bulk;
+        $scope.endpoint_handling = function (endpoint, details) {
+            if (!endpoint.bulk.handling_fn) {
+                endpoint.bulk.handling_fn = handle_endpoint_bulk;
             }
 
-            endpoint.bulk_handling_fn($scope, $filter, details);
+            endpoint.bulk.handling_fn($scope, $filter, details);
         }
 
         function refresh() {
             endpointFetcher.set_defaults($scope, 'bulk');
 
             if ($scope.endpoint) {
-                $scope.bulk_label = ($scope.endpoint.bulk_label) ? $scope.endpoint.bulk_label : 'Bulk Review';
-                $scope.bulk_text = ($scope.endpoint.bulk_text) ? $scope.endpoint.bulk_text : '';
+                $scope.bulk_label = ($scope.endpoint.bulk.label) ? $scope.endpoint.bulk.label : 'Bulk Review';
+                $scope.bulk_text = ($scope.endpoint.bulk.text) ? $scope.endpoint.bulk.text : '';
             }
 
             endpointFetcher.fetch_the_rest($scope, refresh, endpoint_handling_prefetch, endpoint_handling);
@@ -120,29 +120,29 @@ dataReviewControllers.controller('DetailCtrl', [
         $scope.$routeParams = $routeParams;     // may be needed by handling.js later
 
         function endpoint_handling_prefetch(endpoint) {
-            if (!endpoint.detail_handling_prefetch_fn) {
-                endpoint.detail_handling_prefetch_fn = handle_endpoint_detail_prefetch;
+            if (!endpoint.detail.handling_prefetch_fn) {
+                endpoint.detail.handling_prefetch_fn = handle_endpoint_detail_prefetch;
             }
 
-            endpoint.detail_handling_prefetch_fn($scope, $filter);
+            endpoint.detail.handling_prefetch_fn($scope, $filter);
         }
 
         function endpoint_handling(endpoint, details) {
-            if (!endpoint.detail_handling_fn) {
-                endpoint.detail_handling_fn = handle_endpoint_detail;
+            if (!endpoint.detail.handling_fn) {
+                endpoint.detail.handling_fn = handle_endpoint_detail;
             }
 
-            endpoint.detail_handling_fn($scope, $filter, details);
+            endpoint.detail.handling_fn($scope, $filter, details);
         }
 
         function refresh() {
-            $scope.detail_text = config.detail_text || '';
+            $scope.detail_text = (config.detail && config.detail.text) ? config.detail.text : '';
 
             endpointFetcher.set_defaults($scope, 'detail');
 
             if ($scope.endpoint) {
-                $scope.detail_label = ($scope.endpoint.detail_label) ? $scope.endpoint.detail_label : 'Detail Review';
-                $scope.detail_text = ($scope.endpoint.detail_text) ? $scope.endpoint.detail_text : '';
+                $scope.detail_label = ($scope.endpoint.detail.label) ? $scope.endpoint.detail.label : 'Detail Review';
+                $scope.detail_text = ($scope.endpoint.detail.text) ? $scope.endpoint.detail.text : '';
             }
 
             endpointFetcher.fetch_the_rest($scope, refresh, endpoint_handling_prefetch, endpoint_handling);
