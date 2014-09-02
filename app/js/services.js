@@ -4,7 +4,71 @@
 
 var dataReviewServices = angular.module('dataReview.services', []);
 
-dataReviewServices.value('version', '0.1');
+dataReviewServices.
+    factory('dataReviewServices', ['config',
+        function (config) {
+            var items = [];
+            var num_items_done = 0;
+            var search_info = {}
+            var selected_name = '';
+            var selected_bulk_id = -1;
+            var selected_detail_id = -1;
+            var total_items = 0;
+            var type = '';
+
+            return {
+                get_items: function () {
+                    return items;
+                },
+                get_num_items_done: function () {
+                    return num_items_done;
+                },
+                get_search_info: function () {
+                    return search_info;
+                },
+                get_selected_bulk_id: function () {
+                    return selected_bulk_id;
+                },
+                get_selected_detail_id: function () {
+                    return selected_detail_id;
+                },
+                get_selected_name: function () {
+                    return selected_name;
+                },
+                get_total_items: function () {
+                    return total_items;
+                },
+                get_type: function () {
+                    return type;
+                },
+                set_items: function (new_items) {
+                    items = new_items;
+                },
+                set_num_items_done: function (num) {
+                    num_items_done = num;
+                },
+                set_search_info: function (srch_info) {
+                    search_info = srch_info
+                },
+                set_selected_bulk_id: function (id) {
+                    selected_bulk_id = id;
+                },
+                set_selected_detail_id: function (id) {
+                    selected_detail_id = id;
+                },
+                set_selected_name: function (new_name) {
+                    selected_name = new_name;
+                },
+                set_total_items: function (num) {
+                    total_items = num;
+                },
+                set_type: function (new_type) {
+                    type = new_type;
+                }
+            }
+        }
+    ]);
+
 
 var config = angular.module('config', []);
 
