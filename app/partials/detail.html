@@ -18,8 +18,9 @@
             Cancel
         </button>
         {{ detail_label }}</h1>
-    <h5 class="text-center" ng-if="detail_display_name && selected_name">
-        <span ng-if="detail_display_name && selected_name">{{ detail_display_name }}: {{ selected_name }}</span>
+    <h5 class="text-center" ng-if="match_all || (detail_display_name && selected_name)">
+        <span ng-if="!match_all && detail_display_name && selected_name">{{ detail_display_name }}: {{ selected_name }}</span>
+        <span ng-if="current_index && total_items && match_all">{{ short_label }}</span>
         <span class="pageInfo" ng-if="current_index && total_items">({{ current_index }} / {{ total_items }}{{ display_type }})</span>
     </h5>
     <progressbar animate="false"

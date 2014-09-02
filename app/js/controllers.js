@@ -38,6 +38,7 @@ dataReviewControllers.controller('BulkCtrl', [
                 endpoint.bulk.handling_prefetch_fn = handle_endpoint_bulk_prefetch;
             }
 
+            $scope.match_all = endpoint.match_all;
             $scope.short_label = endpoint.short_label;
 
             endpoint.bulk.handling_prefetch_fn($scope, $filter);
@@ -261,6 +262,7 @@ dataReviewControllers.controller('DetailCtrl', [
                 endpoint.detail.handling_prefetch_fn = handle_endpoint_detail_prefetch;
             }
 
+            $scope.match_all = endpoint.match_all;
             $scope.short_label = endpoint.short_label;
 
             endpoint.detail.handling_prefetch_fn($scope, $filter);
