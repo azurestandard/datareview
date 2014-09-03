@@ -12,6 +12,7 @@
     "angular-sanitize": "1.2.x",
     "angular-loader": "1.2.x",
     "angular-mocks": "~1.2.x",
+    "elasticsearch": "~2.4.0",
     "html5-boilerplate": "~4.3.0",
     "ng-grid": "^2.0.0",
     "underscore": "~1.6.0"
