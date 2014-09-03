@@ -126,7 +126,8 @@ dataReviewControllers.controller('DetailCtrl', [
     function($rootScope, $scope, $filter, $http, $location, $q, $route, $routeParams, $timeout,
              config, dataReviewServices, es, es_client, esFactory, endpointFetcher) {
         $rootScope.$on("$routeChangeStart", function (event, next, current) {
-            if (current.scope.is_editing &&
+            if (current.scope &&
+                current.scope.is_editing &&
                 current.scope.cancel_edit) {
                 // derived from http://stackoverflow.com/a/18245378 as accessed 9/2/2014 10:29 am CDT
                 next.resolve = angular.extend(next.resolve || {}, {
