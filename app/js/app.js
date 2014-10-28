@@ -18,9 +18,16 @@ var dataReviewApp = angular.module('dataReview', [
     'dataReview.directives',
     'dataReview.controllers'
 ]).
-config(['$httpProvider', function($httpProvider) {
-    $httpProvider.defaults.headers.common.Accept = 'application/json';
-}]);
+config(['$httpProvider', '$sceDelegateProvider',
+    function($httpProvider, $sceDelegateProvider) {
+        $httpProvider.defaults.headers.common.Accept = 'application/json';
+
+        $sceDelegateProvider.resourceUrlWhitelist([
+            'self',
+            'http://0.0.0.0:8000/**'
+        ]);
+    }
+]);
 
 dataReviewApp.run(['$rootScope', 'config',
     function($rootScope, config) {
