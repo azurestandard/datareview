@@ -28,6 +28,7 @@ dataReviewControllers.controller('BulkCtrl', [
 
         // may be needed by handling.js later ...
         $scope.dataReviewServices = dataReviewServices;
+        $scope.endpointFetcher = endpointFetcher;
         $scope.$filter = $filter;
         $scope.$http = $http;
         $scope.$location = $location;
@@ -63,6 +64,20 @@ dataReviewControllers.controller('BulkCtrl', [
             }
 
             endpointFetcher.fetch_the_rest($scope, refresh, endpoint_handling_prefetch, $scope.endpoint_handling);
+        }
+
+        $scope.switch_locations = function(new_url) {
+            new_url = new_url.replace(/:key/gi, $scope.endpoint.key)
+                             .replace(/:type/gi, $scope.endpoint.default_type);
+
+            if (scope.$$phase) {
+                // todo: see if ^this check can be removed
+                scope.$location.path(new_url);
+            } else {
+                scope.$apply(function() {
+                    scope.$location.path(new_url);
+                });
+            }
         }
 
         refresh();
@@ -242,6 +257,7 @@ dataReviewControllers.controller('DetailCtrl', [
         });
 
         $scope.dataReviewServices = dataReviewServices;
+        $scope.endpointFetcher = endpointFetcher;
 
         // set our detail nav link to whatever we were at last
         $rootScope.detail_nav_url = $location.absUrl();
@@ -353,6 +369,7 @@ dataReviewControllers.controller('DetailCtrl', [
             endpointFetcher.set_defaults($scope, 'detail');
 
             if ($scope.endpoint) {
+                $scope.use_detail_pager = $scope.endpoint.detail.use_detail_pager;
                 $scope.detail_label = ($scope.endpoint.detail.label) ? $scope.endpoint.detail.label : 'Detail Review';
                 $scope.detail_text = ($scope.endpoint.detail.text) ? $scope.endpoint.detail.text : '';
 
@@ -381,6 +398,20 @@ dataReviewControllers.controller('DetailCtrl', [
                 } else {
                     $scope.display_type = ' items';
                 }
+            }
+        }
+
+        $scope.switch_locations = function(new_url) {
+            new_url = new_url.replace(/:key/gi, $scope.endpoint.key)
+                             .replace(/:type/gi, $scope.endpoint.default_type);
+
+            if (scope.$$phase) {
+                // todo: see if ^this check can be removed
+                scope.$location.path(new_url);
+            } else {
+                scope.$apply(function() {
+                    scope.$location.path(new_url);
+                });
             }
         }
 

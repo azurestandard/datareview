@@ -13,6 +13,7 @@ var dataReviewApp = angular.module('dataReview', [
     'ngRoute',
     'ngSanitize',
     'ui.bootstrap',
+    'ui.tree',
     'dataReview.filters',
     'dataReview.services',
     'dataReview.directives',

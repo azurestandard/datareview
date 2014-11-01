@@ -269,7 +269,8 @@ endpointFetcher.
                             $scope.endpoint_url = $scope.endpoint_url
                                                         .replace(/:key/, $scope.key)
                                                         .replace(/:type/, $scope.type)
-                                                        .replace(/:id/, $scope.id);
+                                                        .replace(/:id/, $scope.id)
+                                                        .replace('undefined', '');
                         }
 
                         if (prefetch_callback_fn) {
@@ -281,25 +282,27 @@ endpointFetcher.
                         } else {
                             var withCredentials = $scope.endpoint.withCredentials ? $scope.endpoint.withCredentials : false;
 
-                            if ($scope.endpoint_url.indexOf($scope.search.base_url) >= 0) {
-                                withCredentials = $scope.search.withCredentials;
+                            if ($scope.endpoint_url) {
+                                if ($scope.endpoint_url.indexOf($scope.search.base_url) >= 0) {
+                                    withCredentials = $scope.search.withCredentials;
+                                }
+
+                                var Endpoint = $resource($scope.endpoint_url, {}, {
+                                    get: {
+                                        method: 'GET',
+                                        headers: {
+                                            'Accept': 'application/json',
+                                        },
+                                        withCredentials: withCredentials
+                                    }
+                                });
+
+                                $scope.details = Endpoint.get({}, function() {
+                                    if (postfetch_callback_fn) {
+                                        postfetch_callback_fn($scope.endpoint, $scope.details);
+                                    }
+                                });
                             }
-
-                            var Endpoint = $resource($scope.endpoint_url, {}, {
-                                get: {
-                                    method: 'GET',
-                                    headers: {
-                                        'Accept': 'application/json',
-                                    },
-                                    withCredentials: withCredentials
-                                }
-                            });
-
-                            $scope.details = Endpoint.get({}, function() {
-                                if (postfetch_callback_fn) {
-                                    postfetch_callback_fn($scope.endpoint, $scope.details);
-                                }
-                            });
                         }
                     } else {
                         console.log('else');

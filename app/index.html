@@ -13,6 +13,7 @@
     <link rel="shortcut icon" href="img/favicon.png">
     <link rel="stylesheet" href="bower_components/html5-boilerplate/css/normalize.css">
     <link rel="stylesheet" href="bower_components/html5-boilerplate/css/main.css">
+    <link rel="stylesheet" href="bower_components/angular-ui-tree/dist/angular-ui-tree.min.css">
     <link rel="stylesheet" href="bower_components/ng-grid/ng-grid.css">
     <link rel="stylesheet" href="css/bootstrap.css"/>
     <link rel="stylesheet" href="css/app.css"/>
@@ -32,8 +33,8 @@
             <ul class="nav navbar-nav">
                 <li class="active"><a href="{{ home.url }}" ng-bind-template="{{ home.label }}">Home</a></li>
                 <li><a href="#/" ng-bind-template="{{ overview_nav_label }}">Overview</a></li>
-                <li><a href="{{ bulk_nav_url }}" ng-bind-template="{{ bulk_nav_label }}">Bulk Review</a></li>
-                <li><a href="{{ detail_nav_url }}" ng-bind-template="{{ detail_nav_label }}">Detail Review</a></li>
+                <li ng-if="bulk_nav_url != null"><a href="{{ bulk_nav_url }}" ng-bind-template="{{ bulk_nav_label }}">Bulk Review</a></li>
+                <li ng-if="detail_nav_url != null"><a href="{{ detail_nav_url }}" ng-bind-template="{{ detail_nav_label }}">Detail Review</a></li>
             </ul>
         </div><!--/.nav-collapse -->
     </div>
@@ -51,6 +52,7 @@
     <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
     <script src="bower_components/angular-bootstrap/ui-bootstrap.js"></script>
     <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="bower_components/angular-ui-tree/dist/angular-ui-tree.js"></script>
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/elasticsearch/elasticsearch.angular.js"></script>
     <script src="bower_components/ng-grid/build/ng-grid.debug.js"></script>

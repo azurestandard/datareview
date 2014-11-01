@@ -1,36 +1,38 @@
 <div class="container" id="main">
-    <h1 class="text-center">
-        <span class="glyphicon glyphicon-ok-circle iconColor vtop"
-              ng-if="is_reviewed"
-              tooltip-animation="false"
-              tooltip-placement="bottom"
-              tooltip="{{ reviewed_tooltip }}"></span>
-        <button type="button"
-                class="btn btn-primary"
-                ng-if="!is_reviewed && !is_editing"
-                ng-click="claim_piece(this)">
-            Edit
-        </button>
-        <button type="button"
-                class="btn btn-primary"
-                ng-if="!is_reviewed && is_editing"
-                ng-click="cancel_edit(this, true)">
-            Cancel
-        </button>
-        {{ detail_label }}</h1>
-    <h5 class="text-center" ng-if="match_all || (detail_display_name && selected_name)">
-        <span ng-if="!match_all && detail_display_name && selected_name">{{ detail_display_name }}: {{ selected_name }}</span>
-        <span ng-if="current_index && total_items && match_all">{{ short_label }}</span>
-        <span class="pageInfo" ng-if="current_index && total_items">({{ current_index }} / {{ total_items }}{{ display_type }})</span>
-    </h5>
-    <progressbar animate="false"
-                 type="{{ done_level }}"
-                 value="percent_done" >
-        <b>{{ num_items_done }} ({{ percent_done | number:0 }}%)</b>
-    </progressbar>
-    <pager items-per-page="1"
-           ng-change="page_changed()"
-           ng-model="current_index"
-           total-items="total_items" ></pager>
+    <div ng-hide="!use_detail_pager">
+        <h1 class="text-center">
+            <span class="glyphicon glyphicon-ok-circle iconColor vtop"
+                  ng-if="is_reviewed"
+                  tooltip-animation="false"
+                  tooltip-placement="bottom"
+                  tooltip="{{ reviewed_tooltip }}"></span>
+            <button type="button"
+                    class="btn btn-primary"
+                    ng-if="!is_reviewed && !is_editing"
+                    ng-click="claim_piece(this)">
+                Edit
+            </button>
+            <button type="button"
+                    class="btn btn-primary"
+                    ng-if="!is_reviewed && is_editing"
+                    ng-click="cancel_edit(this, true)">
+                Cancel
+            </button>
+            {{ detail_label }}</h1>
+        <h5 class="text-center" ng-if="match_all || (detail_display_name && selected_name)">
+            <span ng-if="!match_all && detail_display_name && selected_name">{{ detail_display_name }}: {{ selected_name }}</span>
+            <span ng-if="current_index && total_items && match_all">{{ short_label }}</span>
+            <span class="pageInfo" ng-if="current_index && total_items">({{ current_index }} / {{ total_items }}{{ display_type }})</span>
+        </h5>
+        <progressbar animate="false"
+                     type="{{ done_level }}"
+                     value="percent_done" >
+            <b>{{ num_items_done }} ({{ percent_done | number:0 }}%)</b>
+        </progressbar>
+        <pager items-per-page="1"
+               ng-change="page_changed()"
+               ng-model="current_index"
+               total-items="total_items" ></pager>
+    </div>
     <div ng-include="endpoint.detail.partial_url"></div>
 </div>
